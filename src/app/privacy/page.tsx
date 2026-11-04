@@ -102,7 +102,10 @@ export default function PrivacyPage() {
                   4. Third-Party Services and Advertising
                 </h2>
                 <p>
-                  The Tap & Learn core mobile reader does not incorporate third-party ad networks, tracking pixels, or user behavior surveillance SDKs.
+                  <strong>Mobile Application:</strong> The Tap & Learn core mobile reader does not incorporate third-party ad networks, commercial tracking pixels, or user behavior surveillance SDKs. It is strictly offline and ad-free.
+                </p>
+                <p>
+                  <strong>Promotional Website:</strong> To sustain free open-source educational documentation and server hosting, this website may display curated educational partner offers, sponsored academic guides, or programmatic advertisements (such as Google AdSense). Programmatic ad providers may use anonymous identifiers and browser cookies in accordance with standard web privacy practices. You can manage or disable cookie preferences directly through your browser settings or ad-blocking extensions without impacting your ability to browse this site or use the mobile app.
                 </p>
               </section>
 

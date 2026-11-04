@@ -10,6 +10,7 @@ import {
   BookOpen,
   Info,
   Check,
+  ArrowDown,
 } from "lucide-react";
 import { demoLexicon, samplePassages, type DemoWordDetail } from "@/content/demoWords";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -27,11 +28,11 @@ export function WordDemo() {
 
   const handleWordTap = (targetKey: string) => {
     setSelectedWordKey(targetKey);
-    if (typeof window !== "undefined" && window.innerWidth < 1024) {
-      setTimeout(() => {
-        sheetRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 50);
-    }
+  };
+
+  // Smooth scroll only when user explicitly requests on mobile
+  const scrollToSheet = () => {
+    sheetRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   };
 
   // Web Speech API for TTS Pronunciation
@@ -66,17 +67,6 @@ export function WordDemo() {
     }, 2800);
   };
 
-  // Close with Escape key
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        // keep selected word for desktop view, but allows unfocus
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
   return (
     <section id="demo" className="py-20 lg:py-28 bg-slate-50 relative overflow-hidden">
       {/* Decorative gradient glow */}
@@ -107,32 +97,32 @@ export function WordDemo() {
         {/* Two-Column Demo Workbench */}
         <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: Simulated PDF Reading Canvas */}
-          <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 shadow-card border border-slate-200 relative">
+          <div className="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-8 shadow-card border border-slate-200 relative">
             {/* Top Toolbar mimicking mobile PDF Reader */}
-            <div className="flex items-center justify-between pb-5 mb-6 border-b border-slate-100">
+            <div className="flex items-center justify-between pb-4 sm:pb-5 mb-5 sm:mb-6 border-b border-slate-100">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-xs">
+                <div className="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-xs shrink-0">
                   <BookOpen className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900 leading-snug">
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
                     {passage.title}
                   </h4>
-                  <p className="text-xs text-slate-500 font-medium">
+                  <p className="text-[11px] sm:text-xs text-slate-500 font-medium">
                     {passage.source}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-600">
+              <div className="flex items-center gap-2 shrink-0">
+                <span className="text-[11px] sm:text-xs font-semibold px-2 sm:px-2.5 py-1 rounded-md bg-slate-100 text-slate-600">
                   Page 4 of 28
                 </span>
               </div>
             </div>
 
             {/* Reading Document Canvas */}
-            <div className="prose prose-slate max-w-none text-slate-800 text-base sm:text-lg leading-[1.9] sm:leading-[2.1] font-normal selection:bg-brand-100">
-              <p className="bg-slate-50/60 p-5 sm:p-7 rounded-2xl border border-slate-100 text-justify">
+            <div className="prose prose-slate max-w-none text-slate-800 text-base sm:text-lg leading-[2] sm:leading-[2.2] font-normal selection:bg-brand-100">
+              <div className="bg-slate-50/70 p-4 sm:p-7 rounded-2xl border border-slate-100">
                 {passage.tokens.map((token, index) => {
                   if (!token.isTarget || !token.targetKey) {
                     return <span key={index}>{token.text}</span>;
@@ -147,7 +137,7 @@ export function WordDemo() {
                       type="button"
                       onClick={() => handleWordTap(token.targetKey!)}
                       aria-pressed={isSelected}
-                      className={`inline-flex items-center mx-1 px-3 py-1 sm:py-0.5 my-0.5 rounded-lg font-bold transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 ${
+                      className={`inline-flex items-center mx-1 px-2.5 sm:px-3 py-1 sm:py-0.5 my-1 rounded-lg font-bold transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 touch-manipulation min-h-[38px] ${
                         isSelected
                           ? "bg-brand-600 text-white shadow-md shadow-brand-600/30 scale-105"
                           : isSaved
@@ -156,18 +146,33 @@ export function WordDemo() {
                       }`}
                       title={`Tap to define "${token.text}"`}
                     >
-                      {token.text}
+                      <span>{token.text}</span>
                       {isSaved && !isSelected && (
                         <span className="ml-1 w-1.5 h-1.5 rounded-full bg-purple-600 inline-block" />
                       )}
                     </button>
                   );
                 })}
-              </p>
+              </div>
+            </div>
+
+            {/* Mobile Jump-To-Sheet Indicator */}
+            <div className="mt-4 flex lg:hidden items-center justify-between gap-2 p-2.5 rounded-xl bg-brand-50 border border-brand-100 text-brand-800 text-xs">
+              <span className="font-semibold">
+                Selected: <strong className="capitalize text-brand-900">{activeEntry.lemma}</strong>
+              </span>
+              <button
+                type="button"
+                onClick={scrollToSheet}
+                className="flex items-center gap-1 font-bold text-brand-700 hover:underline min-h-[36px] px-2 py-1"
+              >
+                <span>View Sheet</span>
+                <ArrowDown className="w-3.5 h-3.5" />
+              </button>
             </div>
 
             {/* Helper Hint */}
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500 pt-4 border-t border-slate-100">
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500 pt-4 border-t border-slate-100">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-brand-600 inline-block" />
                 <span>Tap any colored word to inspect its definition</span>
@@ -184,7 +189,7 @@ export function WordDemo() {
             <div className="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden transition-all duration-300">
               {/* Header Drag Handle mimicking Android ModalBottomSheet */}
               <div className="pt-3 pb-1 flex justify-center">
-                <div className="w-10 h-1 rounded-full bg-slate-300" />
+                <div className="w-12 h-1.5 rounded-full bg-slate-300" />
               </div>
 
               {/* Sheet Body */}
@@ -201,7 +206,7 @@ export function WordDemo() {
                         type="button"
                         onClick={() => handlePronounce(activeEntry.lemma)}
                         aria-label={`Listen to pronunciation of ${activeEntry.lemma}`}
-                        className={`p-2 sm:p-2.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 ${
+                        className={`p-2.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 min-w-[44px] min-h-[44px] flex items-center justify-center ${
                           isSpeaking
                             ? "bg-brand-600 text-white animate-pulse"
                             : "bg-brand-50 text-brand-600 hover:bg-brand-100"
@@ -252,26 +257,26 @@ export function WordDemo() {
                   <button
                     type="button"
                     onClick={() => setIsEasyMode(false)}
-                    className={`flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+                    className={`flex-1 py-2.5 px-2 sm:px-3 rounded-xl text-xs sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 min-h-[40px] ${
                       !isEasyMode
                         ? "bg-brand-600 text-white shadow-sm"
                         : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
                     <BookOpen className="w-3.5 h-3.5 shrink-0" />
-                    <span>Standard <span className="hidden sm:inline">Mode</span></span>
+                    <span>Standard Mode</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsEasyMode(true)}
-                    className={`flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+                    className={`flex-1 py-2.5 px-2 sm:px-3 rounded-xl text-xs sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 min-h-[40px] ${
                       isEasyMode
                         ? "bg-accent-purple text-white shadow-sm"
                         : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
                     <Sparkles className="w-3.5 h-3.5 shrink-0" />
-                    <span>Plain English <span className="hidden sm:inline">(Simple)</span></span>
+                    <span>Plain English</span>
                   </button>
                 </div>
 
@@ -337,13 +342,13 @@ export function WordDemo() {
               </div>
             </div>
 
-        {/* Toast Feedback Fixed to viewport bottom on all screens */}
-        {saveToast && (
-          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs sm:text-sm font-bold px-5 py-3 rounded-full shadow-2xl flex items-center gap-2.5 animate-in fade-in slide-in-from-bottom-4 duration-200 whitespace-nowrap border border-slate-700">
-            <Check className="w-4 h-4 text-emerald-400" />
-            <span>{saveToast}</span>
-          </div>
-        )}
+            {/* Toast Feedback Fixed to viewport bottom on all screens */}
+            {saveToast && (
+              <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs sm:text-sm font-bold px-5 py-3 rounded-full shadow-2xl flex items-center gap-2.5 animate-in fade-in slide-in-from-bottom-4 duration-200 whitespace-nowrap border border-slate-700">
+                <Check className="w-4 h-4 text-emerald-400" />
+                <span>{saveToast}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

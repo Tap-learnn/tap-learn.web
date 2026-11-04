@@ -4,8 +4,12 @@ import * as React from "react";
 import { ShieldCheck } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { AdSlot } from "@/components/ui/AdSlot";
+import { adConfig, educationalSponsorsList } from "@/content/ads";
 
 export function SponsoredAds() {
+  const featuredSponsor = educationalSponsorsList.find((s) => s.featured) || educationalSponsorsList[0];
+  const gridSponsors = educationalSponsorsList.filter((s) => !s.featured).slice(0, 3);
+
   return (
     <section id="sponsors" className="py-16 sm:py-20 lg:py-24 bg-slate-100/70 border-y border-slate-200/80 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -21,42 +25,21 @@ export function SponsoredAds() {
         <div className="mt-10">
           <AdSlot
             format="leaderboard"
-            sponsorName="Oxford & Cambridge Lexicon Partners"
-            title="Accelerate Your Academic English & Vocabulary Mastery"
-            description="Access over 3,000 verified academic collocations, root-word breakdowns, and printable PDF study guides tailored for ESL, SAT, and GRE exam candidates."
-            ctaText="Explore Study Guides"
-            ctaUrl="https://github.com/avinashpandit1122/tap-search"
+            adSlot={adConfig.defaultSlotLeaderboard}
+            sponsorId={featuredSponsor.id}
           />
         </div>
 
         {/* 3-Column Native Sponsored Partner Cards */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <AdSlot
-            format="native-card"
-            sponsorName="Global Literacy Lab"
-            title="Medical & Science Terminology Decks"
-            description="Master complex anatomical, pharmacological, and clinical Latin roots with free downloadable offline study flashcards."
-            ctaText="Get Free Flashcards"
-            ctaUrl="https://github.com/avinashpandit1122/tap-search"
-          />
-
-          <AdSlot
-            format="native-card"
-            sponsorName="EduTech Ventures"
-            title="Interactive Bilingual Grammar Guides"
-            description="Structured English explanations designed for international students reading advanced textbooks and legal papers."
-            ctaText="View Grammar Decks"
-            ctaUrl="https://github.com/avinashpandit1122/tap-search"
-          />
-
-          <AdSlot
-            format="native-card"
-            sponsorName="Open Reader Foundation"
-            title="Public Domain Academic PDF Repository"
-            description="Over 10,000 classic literature, philosophy, and history PDFs formatted with selectable high-resolution text."
-            ctaText="Browse Free PDFs"
-            ctaUrl="https://github.com/avinashpandit1122/tap-search"
-          />
+          {gridSponsors.map((sponsor) => (
+            <AdSlot
+              key={sponsor.id}
+              format="native-card"
+              adSlot={adConfig.defaultSlotRectangle}
+              sponsorId={sponsor.id}
+            />
+          ))}
         </div>
 
         {/* Ethical Ads & Offline Privacy Transparency Banner */}
@@ -67,7 +50,7 @@ export function SponsoredAds() {
             </div>
             <div>
               <strong className="text-slate-900 block sm:inline">Advertising Transparency: </strong>
-              <span>Sponsored banners help fund hosting and free website resources. The <strong>Tap & Learn mobile application</strong> remains 100% offline and completely free of third-party ad trackers.</span>
+              <span>{adConfig.ethicalNotice}</span>
             </div>
           </div>
           <span className="shrink-0 text-[11px] font-bold uppercase tracking-wider text-slate-400">

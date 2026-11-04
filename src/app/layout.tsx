@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/content/site";
+import { AdSenseScript } from "@/components/ui/AdSenseScript";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -71,6 +72,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        <AdSenseScript />
+      </head>
       <body className="font-sans text-slate-900 bg-slate-50 antialiased selection:bg-brand-100 selection:text-brand-900">
         {children}
       </body>
