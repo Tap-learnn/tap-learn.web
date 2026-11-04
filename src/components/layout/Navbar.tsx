@@ -113,7 +113,7 @@ export function Navbar() {
 
         {/* Mobile Slide-down Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden glass-nav border-b border-slate-200 px-4 pt-3 pb-6 animate-in slide-in-from-top-4 duration-200">
+          <div className="md:hidden glass-nav border-b border-slate-200 px-4 pt-3 pb-6 animate-in slide-in-from-top-4 duration-200 max-h-[80vh] overflow-y-auto">
             <nav className="flex flex-col space-y-3">
               {siteConfig.navItems.map((item) => (
                 <a

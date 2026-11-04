@@ -34,7 +34,7 @@ export function SectionHeading({
           <Badge variant={badgeVariant}>{badge}</Badge>
         </div>
       )}
-      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-[1.15]">
+      <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-[1.15]">
         {title}{" "}
         {highlight && (
           <span className="bg-gradient-to-r from-brand-600 to-accent-purple bg-clip-text text-transparent">

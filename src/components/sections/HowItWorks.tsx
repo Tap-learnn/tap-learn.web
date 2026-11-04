@@ -97,7 +97,7 @@ export function HowItWorks() {
                     isReversed ? "lg:order-1" : "lg:order-2"
                   }`}
                 >
-                  <div className="relative w-full max-w-sm aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl border-4 border-white ring-1 ring-slate-200 group">
+                  <div className="relative w-full max-w-[280px] sm:max-w-sm aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl border-4 border-white ring-1 ring-slate-200 group">
                     <Image
                       src={step.screenshot}
                       alt={step.title}

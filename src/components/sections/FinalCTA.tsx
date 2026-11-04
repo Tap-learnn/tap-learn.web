@@ -13,7 +13,7 @@ export function FinalCTA() {
     <>
       <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-[40px] bg-gradient-to-br from-brand-600 via-blue-700 to-accent-purple p-8 sm:p-12 lg:p-16 text-white shadow-2xl overflow-hidden">
+          <div className="relative rounded-[32px] sm:rounded-[40px] bg-gradient-to-br from-brand-600 via-blue-700 to-accent-purple p-6 sm:p-12 lg:p-16 text-white shadow-2xl overflow-hidden">
             {/* Ambient background circles */}
             <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-[500px] h-[500px] bg-white/10 rounded-full blur-2xl pointer-events-none" />
             <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-[400px] h-[400px] bg-purple-500/20 rounded-full blur-2xl pointer-events-none" />
@@ -36,7 +36,7 @@ export function FinalCTA() {
               </div>
 
               {/* Title */}
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
                 Ready to Experience Friction-Free Offline Reading?
               </h2>
 

@@ -91,7 +91,7 @@ export function Screenshots() {
         />
 
         {/* Filter Tabs */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-2">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
           {[
             { label: "All Screens", value: "all" },
             { label: "Reading & Lookup", value: "reader" },
@@ -101,7 +101,7 @@ export function Screenshots() {
             <button
               key={tab.value}
               onClick={() => setFilter(tab.value as any)}
-              className={`px-4 py-2 rounded-full text-xs sm:text-sm font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 ${
+              className={`px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 min-h-[40px] flex items-center justify-center ${
                 filter === tab.value
                   ? "bg-brand-600 text-white shadow-md shadow-brand-600/25"
                   : "bg-slate-100 text-slate-600 hover:bg-slate-200"
@@ -117,7 +117,7 @@ export function Screenshots() {
           {filteredScreenshots.map((item) => (
             <div
               key={item.id}
-              className="group bg-slate-50 rounded-3xl p-4 border border-slate-200 hover:border-brand-200 hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between"
+              className="group bg-slate-50 rounded-3xl p-4 border border-slate-200 hover:border-brand-200 hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between max-w-[300px] sm:max-w-none mx-auto w-full"
             >
               {/* Smartphone Frame Container */}
               <div className="relative w-full aspect-[9/19] rounded-2xl overflow-hidden bg-slate-900 shadow-md">

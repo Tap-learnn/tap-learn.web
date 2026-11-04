@@ -20,9 +20,19 @@ export function WordDemo() {
   const [savedWords, setSavedWords] = React.useState<Set<string>>(new Set(["resilience"]));
   const [isSpeaking, setIsSpeaking] = React.useState<boolean>(false);
   const [saveToast, setSaveToast] = React.useState<string | null>(null);
+  const sheetRef = React.useRef<HTMLDivElement>(null);
 
   const activeEntry: DemoWordDetail = demoLexicon[selectedWordKey] || demoLexicon["resilience"];
   const passage = samplePassages[0];
+
+  const handleWordTap = (targetKey: string) => {
+    setSelectedWordKey(targetKey);
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      setTimeout(() => {
+        sheetRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+    }
+  };
 
   // Web Speech API for TTS Pronunciation
   const handlePronounce = (word: string) => {
@@ -135,9 +145,9 @@ export function WordDemo() {
                     <button
                       key={index}
                       type="button"
-                      onClick={() => setSelectedWordKey(token.targetKey!)}
+                      onClick={() => handleWordTap(token.targetKey!)}
                       aria-pressed={isSelected}
-                      className={`inline-flex items-center mx-1 px-2.5 py-0.5 rounded-lg font-bold transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 ${
+                      className={`inline-flex items-center mx-1 px-3 py-1 sm:py-0.5 my-0.5 rounded-lg font-bold transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 ${
                         isSelected
                           ? "bg-brand-600 text-white shadow-md shadow-brand-600/30 scale-105"
                           : isSaved
@@ -170,7 +180,7 @@ export function WordDemo() {
           </div>
 
           {/* Right Column: Replicated Mobile WordMeaningBottomSheet */}
-          <div className="lg:col-span-5 relative">
+          <div ref={sheetRef} className="lg:col-span-5 relative scroll-mt-24">
             <div className="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden transition-all duration-300">
               {/* Header Drag Handle mimicking Android ModalBottomSheet */}
               <div className="pt-3 pb-1 flex justify-center">
@@ -178,12 +188,12 @@ export function WordDemo() {
               </div>
 
               {/* Sheet Body */}
-              <div className="p-6 sm:p-7 space-y-5">
+              <div className="p-5 sm:p-7 space-y-5">
                 {/* Word Title + Pronunciation + Actions */}
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <div className="flex items-center gap-3">
-                      <h3 className="text-3xl font-black text-slate-900 capitalize tracking-tight">
+                    <div className="flex items-center gap-2.5 sm:gap-3">
+                      <h3 className="text-2xl sm:text-3xl font-black text-slate-900 capitalize tracking-tight">
                         {activeEntry.lemma}
                       </h3>
                       {/* Audio Pronunciation Button */}
@@ -191,7 +201,7 @@ export function WordDemo() {
                         type="button"
                         onClick={() => handlePronounce(activeEntry.lemma)}
                         aria-label={`Listen to pronunciation of ${activeEntry.lemma}`}
-                        className={`p-2.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 ${
+                        className={`p-2 sm:p-2.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 ${
                           isSpeaking
                             ? "bg-brand-600 text-white animate-pulse"
                             : "bg-brand-50 text-brand-600 hover:bg-brand-100"
@@ -203,17 +213,17 @@ export function WordDemo() {
                     </div>
 
                     {/* Phonetic IPA + Part of Speech */}
-                    <div className="flex items-center gap-3 mt-1.5">
-                      <span className="text-sm font-semibold text-slate-500 font-mono">
+                    <div className="flex items-center gap-2.5 mt-1.5">
+                      <span className="text-xs sm:text-sm font-semibold text-slate-500 font-mono">
                         {activeEntry.phonetic}
                       </span>
-                      <span className="px-2.5 py-0.5 rounded-md bg-brand-50 text-brand-700 font-bold text-xs capitalize border border-brand-100">
+                      <span className="px-2 sm:px-2.5 py-0.5 rounded-md bg-brand-50 text-brand-700 font-bold text-xs capitalize border border-brand-100">
                         {activeEntry.partOfSpeech}
                       </span>
                     </div>
                   </div>
 
-                  {/* Bookmark Button */}
+                  {/* Bookmark Button with 44x44px touch target */}
                   <button
                     type="button"
                     onClick={() => toggleSaveWord(activeEntry.lemma)}
@@ -222,7 +232,7 @@ export function WordDemo() {
                         ? `Remove ${activeEntry.lemma} from saved vocabulary`
                         : `Save ${activeEntry.lemma} to vocabulary`
                     }
-                    className={`p-3 rounded-2xl border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 ${
+                    className={`p-3 rounded-2xl border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 min-w-[44px] min-h-[44px] flex items-center justify-center ${
                       savedWords.has(activeEntry.lemma)
                         ? "bg-purple-50 text-accent-purple border-purple-200 hover:bg-purple-100"
                         : "bg-slate-50 text-slate-400 border-slate-200 hover:text-slate-600 hover:bg-slate-100"
@@ -242,26 +252,26 @@ export function WordDemo() {
                   <button
                     type="button"
                     onClick={() => setIsEasyMode(false)}
-                    className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+                    className={`flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                       !isEasyMode
                         ? "bg-brand-600 text-white shadow-sm"
                         : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
-                    <BookOpen className="w-3.5 h-3.5" />
-                    Standard Mode
+                    <BookOpen className="w-3.5 h-3.5 shrink-0" />
+                    <span>Standard <span className="hidden sm:inline">Mode</span></span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsEasyMode(true)}
-                    className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+                    className={`flex-1 py-2 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                       isEasyMode
                         ? "bg-accent-purple text-white shadow-sm"
                         : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
-                    <Sparkles className="w-3.5 h-3.5" />
-                    Plain English (Simple)
+                    <Sparkles className="w-3.5 h-3.5 shrink-0" />
+                    <span>Plain English <span className="hidden sm:inline">(Simple)</span></span>
                   </button>
                 </div>
 
@@ -327,13 +337,13 @@ export function WordDemo() {
               </div>
             </div>
 
-            {/* Toast Feedback */}
-            {saveToast && (
-              <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2 duration-200 whitespace-nowrap">
-                <Check className="w-3.5 h-3.5 text-emerald-400" />
-                <span>{saveToast}</span>
-              </div>
-            )}
+        {/* Toast Feedback Fixed to viewport bottom on all screens */}
+        {saveToast && (
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs sm:text-sm font-bold px-5 py-3 rounded-full shadow-2xl flex items-center gap-2.5 animate-in fade-in slide-in-from-bottom-4 duration-200 whitespace-nowrap border border-slate-700">
+            <Check className="w-4 h-4 text-emerald-400" />
+            <span>{saveToast}</span>
+          </div>
+        )}
           </div>
         </div>
       </div>

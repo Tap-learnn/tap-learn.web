@@ -5,6 +5,7 @@ import { WordDemo } from "@/components/sections/WordDemo";
 import { Features } from "@/components/sections/Features";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Screenshots } from "@/components/sections/Screenshots";
+import { SponsoredAds } from "@/components/sections/SponsoredAds";
 import { Privacy } from "@/components/sections/Privacy";
 import { FAQ } from "@/components/sections/FAQ";
 import { FinalCTA } from "@/components/sections/FinalCTA";
@@ -19,6 +20,7 @@ export default function HomePage() {
         <Features />
         <HowItWorks />
         <Screenshots />
+        <SponsoredAds />
         <Privacy />
         <FAQ />
         <FinalCTA />

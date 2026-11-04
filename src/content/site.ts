@@ -9,9 +9,10 @@ export const siteConfig = {
   supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "support@tapandlearn.app",
   navItems: [
     { label: "Features", href: "#features" },
-    { label: "Interactive Demo", href: "#demo" },
+    { label: "Live Demo", href: "#demo" },
     { label: "How It Works", href: "#how-it-works" },
     { label: "Screenshots", href: "#screenshots" },
+    { label: "Partners & Ads", href: "#sponsors" },
     { label: "Privacy & Offline", href: "#privacy" },
     { label: "FAQ", href: "#faq" },
   ],
