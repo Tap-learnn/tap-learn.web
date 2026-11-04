@@ -20,3 +20,17 @@
 
 ## ADR-004: Pure Static Next.js App Router Architecture
 - **Decision:** Build a 100% static, performant Next.js 15 site targeting Vercel deployment with zero mandatory backend or paid API keys.
+
+## ADR-005: Android Material 3 Mobile Screen Parity & Showcase Overhaul
+- **Problem:**
+  - Generic iPhone device mockups with Dynamic Island pills and bottom home bars obstructed Android Material 3 app headers and navigation.
+  - Screenshots were cropped aggressively due to mismatched aspect ratios (`aspect-[9/16]` and `aspect-[9/19]` vs actual screenshot ratio `219x507` / `aspect-[219/507]`).
+  - Only 8 of 14 authentic screens were displayed, in an awkward single-column stack on mobile.
+  - Word Demo violently scrolled mobile viewports away from reading text on tap.
+- **Decision & Solution:**
+  1. Re-engineered `DeviceFrame.tsx` into an authentic flagship Android chassis with precise `219/507` aspect ratio, minimal punch-hole camera, chamfered metallic edges, and specular glass gloss. Zero clipping.
+  2. Redesigned `Hero.tsx` with responsive floating badges and an interactive 3-screen live switcher ("PDF Reader", "Word Meaning", "Library Shelf").
+  3. Upgraded `HowItWorks.tsx` from raw cropped 9:16 boxes to sleek `DeviceFrame` Android phone mockups without dimming gradients.
+  4. Built a complete 14-screen interactive showcase in `Screenshots.tsx` featuring filter tabs, a mobile carousel with thumbnail pagination, a responsive grid, and a full-screen Lightbox modal.
+  5. Refined `WordDemo.tsx` for mobile viewports by removing disruptive forced scroll jumps, enhancing tap indicators, and ensuring 44px+ touch targets.
+  6. Upgraded `Navbar.tsx` with background-scroll lock, backdrop blur overlay, and accessible touch ergonomics.
